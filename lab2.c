@@ -16,11 +16,11 @@ struct Process {
     int burstTime;
     int remainingBurst;
     int priority;
+    int numContext;
     double completionTime;
     double waitingTime;
     double turnaroundTime;
     double responseTime;
-    int numContext;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,36 +89,6 @@ struct Process dequeue(Queue* queue) {
     return item;
 }
 
-// void display(Queue* queue) {
-//     if (isEmpty(queue)) {
-//         printf("queue is empty\n");
-//         return;
-//     }
-//     printf("Queue: ");
-    
-//     Node* current = queue -> front;
-
-    // while (current != NULL) {
-    //     printf("\n\nPid %d:\n----------------------\n", current -> data.pid);
-    //     printf("Arrival Time: %d\n", current -> data.arrivalTime);
-    //     printf("CPU-Burst: %d\n", current -> data.burstTime);
-    //     printf("Priority: %d\n", current -> data.priority);
-    //     printf("Finish: %.0f\n", current -> data.completionTime);
-    //     printf("Waiting Time: %.0f\n", current -> data.waitingTime);
-    //     printf("Turn Around: %.0f\n", current -> data.turnaroundTime);
-    //     printf("Response Time: %.0f\n", current -> data.responseTime);
-    //     printf("No. of Context: %d\n", current -> data.numContext);
-    //     printf("----------------------\n");
-        
-    //     current = current -> next;
-    // }
-    // printf("\n");
-
-    // while (current != NULL) {
-    //     printf("\tPid\t|\tArrival Time\t|\tCPU-Burst\t|\tPriority\t|\t \n");
-    // }
-// }
-
 void display(Queue *queue, char *scheduler) {
     if (isEmpty(queue)) {
         printf("queue is empty\n");
@@ -128,36 +98,33 @@ void display(Queue *queue, char *scheduler) {
     Node* current = queue -> front;
     
     if (!strcmp(scheduler, "0")) {
-        printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: FCFS *******************************\n");
-        printf("*********************************************************************\n");
-        printf("Pid\tArrival\tCPU-Burst\tFinish\tWaiting\tTurnaround\tresponse\tNo. of\n");
-        printf("\tTime\tTime\t\ttime\ttime\ttime\t\ttime\tContext\n");
-        printf("\t\t\t\t\t\t\t\t\tSwitch\n");
-        printf("---------------------------------------------------------------------\n");
+        printf("\n****************************************************************************************\n");
+        printf("************ Scheduling algorithm: FCFS ************************************************\n");
+        printf("****************************************************************************************\n");
+        printf("\t\tCPU-\t\t\tWaiting\t   Turn\t       Response      No. of\n");
+        printf("Pid   Arrival   Burst\tPrio   Finish   Time\t  Around\tTime\t     Context\n");
+        printf("----------------------------------------------------------------------------------------\n");
     }
 
     else if (!strcmp(scheduler, "1")) {
-        printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: SRTF *******************************\n");
-        printf("*********************************************************************\n");
-        printf("pid\tarrival\tCPU-burst\tfinish\twaiting\tturnaround\tresponse\tNo. of\n");
-        printf("\ttime\ttime\t\ttime\ttime\ttime\t\ttime\tContext\n");
-        printf("\t\t\t\t\t\t\t\t\tSwitch\n");
-        printf("---------------------------------------------------------------------\n");
+        printf("\n**********************************************************************************************\n");
+        printf("************ Scheduling algorithm: SRTF *******************************************************\n");
+        printf("**********************************************************************************************\n");
+        printf("\t\tCPU-\t\t\tWaiting\t    Turn\tResponse\tNo. of\n");
+        printf("Pid   Arrival   Burst\tPrio   Finish   Time\t    Around\tTime\t\tContext\n");
+        printf("----------------------------------------------------------------------------------------------\n");
     } else {
-        printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: RR *******************************\n");
-        printf("*********************************************************************\n");
-        printf("pid\tarrival\tCPU-burst\tfinish\twaiting\tturnaround\tresponse\tNo. of\n");
-        printf("\ttime\ttime\t\ttime\ttime\ttime\t\ttime\tContext\n");
-        printf("\t\t\t\t\t\t\t\t\tSwitch\n");
-        printf("---------------------------------------------------------------------\n");
+        printf("\n**********************************************************************************************\n");
+        printf("************ Scheduling algorithm: RR ********************************************************\n");
+        printf("**********************************************************************************************\n");
+        printf("\t\tCPU-\t\t\tWaiting\t    Turn\tResponse\tNo. of\n");
+        printf("Pid   Arrival   Burst\tPrio   Finish   Time\t    Around\tTime\t\tContext\n");
+        printf("----------------------------------------------------------------------------------------------\n");
     }
 
     while (current != NULL) {
-        printf("%d\t%d\t%d\t\t%.1f\t%.1f\t%.1f\t\t%.1f\t%d\n", current -> data.pid, current -> data.arrivalTime,
-        current -> data.burstTime, current -> data.completionTime, current -> data.waitingTime, current -> data.turnaroundTime,
+        printf("%d\t%d\t%d\t%d\t%.1f\t%.1f\t   %.1f\t\t%.1f\t\t%d\n", current -> data.pid, current -> data.arrivalTime,
+        current -> data.burstTime, current -> data.priority, current -> data.completionTime, current -> data.waitingTime, current -> data.turnaroundTime,
         current -> data.responseTime, current -> data.numContext);
 
         current = current -> next;
@@ -252,17 +219,8 @@ void firstComeFirstServe(struct Process process[], int maxConnections, char *sch
     
     // display process info
     display(completedQ, scheduler);
-    
-    // displaying average results
-    // printf("DISPLAYING AVERAGES...\n");
-    // printf("----------------------------------------------------\n");
-    // printf("Average CPU Burst Time: %.2f\n", avgBurstTime);
-    // printf("Average Waiting Time: %.2f\n", avgWaitingTime);
-    // printf("Average Turnaround Time: %.2f\n", avgTurnaroundTime);
-    // printf("Average Response Time: %.2f\n", avgResponseTime);
-    // printf("Total Number of Context Switches performed: %d\n", ttlContextSwitches);
 
-    printf("---------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------\n");
     printf("Average CPU burst time = %.2f ms, Average waiting time = %.2f ms\n", avgBurstTime, avgWaitingTime);
     printf("Average turn around time = %.2f ms, Average response time = %.2f ms\n", avgTurnaroundTime, avgResponseTime);
     printf("Total No. of Context Switching Performed = %d\n", ttlContextSwitches);
@@ -276,54 +234,59 @@ void shortestRemainingTimeFirst(struct Process process[], int maxConnections, ch
     Queue* queue = createQueue();
     Queue* completedQ = createQueue();
 
-    int currentTime = 0;
     int complProcess = 0;
     int ttlContextSwitches = 0;
-    int ttlBurstTime = 0;
+    double currentTime = 0;
+    double ttlBurstTime = 0;
     double ttlWaitingTime = 0;
     double ttlTurnaroundTime = 0;
     double ttlResponseTime = 0;
-    double avgBurstTime;
-    double avgWaitingTime;
-    double avgTurnaroundTime;
-    double avgResponseTime;
-    
 
-    int i = 0;
-    int index = -1; // Index of the last processed process
+    // sets original 'burstTime' to 'remainingBurst' for all processes
+    for (int i = 0; i < maxConnections; i++) {
+        process[i].remainingBurst = process[i].burstTime;
+        process[i].numContext = 0;
+    }
+    int index = -1;
 
     while (complProcess < maxConnections) {
         // Add arriving processes to the queue
-        while (i < maxConnections && process[i].arrivalTime <= currentTime) {
-            enqueue(queue, process[i]);
-            i++;
+        for (int i = 0; i < maxConnections; i++) {
+            if (process[i].arrivalTime <= currentTime && process[i].remainingBurst > 0) {
+                enqueue(queue, process[i]);
+            }
         }
 
         if (!isEmpty(queue)) {
             struct Process current = dequeue(queue);
-            int executionTime = current.remainingBurst; // Execute the remaining burst time
+            int numContext = current.numContext;
+            int executionTime = current.remainingBurst;
             currentTime += executionTime;
-            current.remainingBurst = 0; // Process is completed
+            current.remainingBurst = 0;
+
             current.completionTime = currentTime;
             current.turnaroundTime = current.completionTime - current.arrivalTime;
             current.waitingTime = current.turnaroundTime - current.burstTime;
             current.responseTime = current.waitingTime;
 
+            ttlBurstTime += current.burstTime;
             ttlWaitingTime += current.waitingTime;
             ttlTurnaroundTime += current.turnaroundTime;
             ttlResponseTime += current.responseTime;
             complProcess++;
-
             enqueue(completedQ, current);
 
-            // Update last processed index
-            index = current.pid - 1;
+            // Update current time with context switch time
+            currentTime += CONTEXT_SWITCH_TIME;
+            ttlContextSwitches++;
+            numContext++;
+            current.numContext = numContext;
         } else {
-            // Find the next arrival time after the last processed process
-            int nextArrivalTime = 9999;
-            for (int j = index + 1; j < maxConnections; j++) {
-                if (process[j].arrivalTime < nextArrivalTime) {
-                    nextArrivalTime = process[j].arrivalTime;
+            // Find the next arrival time
+            int nextArrivalTime = 64000;
+            for (int i = 0; i < maxConnections; i++) {
+                if (process[i].arrivalTime < nextArrivalTime) {
+                    nextArrivalTime = process[i].arrivalTime;
                 }
             }
             currentTime = nextArrivalTime;
@@ -331,24 +294,15 @@ void shortestRemainingTimeFirst(struct Process process[], int maxConnections, ch
     }
 
     // Calculate averages
-    avgBurstTime = ttlBurstTime / maxConnections;
-    avgWaitingTime = ttlWaitingTime / maxConnections;
-    avgTurnaroundTime = ttlTurnaroundTime / maxConnections;
-    avgResponseTime = ttlResponseTime / maxConnections;
+    double avgBurstTime = ttlBurstTime / maxConnections;
+    double avgWaitingTime = ttlWaitingTime / maxConnections;
+    double avgTurnaroundTime = ttlTurnaroundTime / maxConnections;
+    double avgResponseTime = ttlResponseTime / maxConnections;
 
     // Display process info
     display(completedQ, scheduler);
 
-    // Display average results
-    // printf("DISPLAYING AVERAGES...\n");
-    // printf("----------------------------------------------------\n");
-    // printf("Average Burst Time: %.2f\n", avgBurstTime);
-    // printf("Average Waiting Time: %.2f\n", avgWaitingTime);
-    // printf("Average Turnaround Time: %.2f\n", avgTurnaroundTime);
-    // printf("Average Response Time: %.2f\n", avgResponseTime);
-    // printf("Total Number of Context Switches: %d\n", ttlContextSwitches);
-
-    printf("---------------------------------------------------------------------\n");
+    printf("---------------------------------------------------------------------------------------------------\n");
     printf("Average CPU burst time = %.2f ms, Average waiting time = %.2f ms\n", avgBurstTime, avgWaitingTime);
     printf("Average turn around time = %.2f ms, Average response time = %.2f ms\n", avgTurnaroundTime, avgResponseTime);
     printf("Total No. of Context Switching Performed = %d\n", ttlContextSwitches);
@@ -364,19 +318,22 @@ void roundRobin(struct Process process[], int maxConnections, char *scheduler, i
 
     int ttlContextSwitches = 0;
     int complProcess = 0;
-    int currentTime = 0;
     int ttlWaitingTime = 0;
     int ttlTurnaroundTime = 0;
     int ttlBurstTime = 0;
     int ttlResponseTime = 0;
+    int numContext = 0;
+    double currentTime = 0;
     double avgBurstTime;
     double avgWaitingTime;
     double avgTurnaroundTime;
     double avgResponseTime;
 
-    // sets 'remainingBurst' for all processes
+
+    // sets original 'burstTime' to 'remainingBurst' for all processes
     for (int i = 0; i < maxConnections; i++) {
         process[i].remainingBurst = process[i].burstTime;
+        process[i].numContext = 0;
     }
 
     int i = 0;
@@ -394,23 +351,30 @@ void roundRobin(struct Process process[], int maxConnections, char *scheduler, i
         // if queue is NOT empty
         if (!isEmpty(queue)) {
             struct Process current = dequeue(queue);
+            numContext = current.numContext;
             int executionTime = (current.remainingBurst < quantumTime) ? current.remainingBurst : quantumTime;
             current.remainingBurst -= executionTime;
-            currentTime += (double)executionTime;
+            current.responseTime = currentTime - current.arrivalTime;
+            currentTime += (double)executionTime;            
 
             // if process is completed
             if (current.remainingBurst == 0) {
                 current.completionTime = currentTime;
                 current.turnaroundTime = current.completionTime - current.arrivalTime;
-                current.waitingTime = current.turnaroundTime - current.burstTime;
-                current.responseTime = current.waitingTime; // For RR, response time is same as waiting time
+                current.waitingTime = currentTime - current.arrivalTime - current.burstTime;
+                // current.responseTime = current.waitingTime - current.arrivalTime;
                 complProcess++;
                 enqueue(completedQ, current);
             } else {
+                numContext++;
+                current.numContext = numContext;
                 enqueue(queue, current);
                 currentTime += CONTEXT_SWITCH_TIME; // Context switch time
                 ttlContextSwitches++;
+
             }
+
+            // updating total values
             ttlWaitingTime += current.waitingTime;
             ttlTurnaroundTime += current.turnaroundTime;
             ttlResponseTime += current.responseTime;
@@ -429,18 +393,10 @@ void roundRobin(struct Process process[], int maxConnections, char *scheduler, i
     // displaying process info
     display(completedQ, scheduler);
 
-    // printf("DISPLAYING AVERAGES...\n");
-    // printf("----------------------------------------------------\n");
-    // printf("Average Burst Time: %.2f\n", avgBurstTime);
-    // printf("Average Waiting Time: %.2f\n", avgWaitingTime);
-    // printf("Average Turnaround Time: %.2f\n", avgTurnaroundTime);
-    // printf("Average Response Time: %.2f\n", avgResponseTime);
-    // printf("Total Number of Context Switches: %d\n", ttlContextSwitches);
-
-    printf("---------------------------------------------------------------------\n");
+    printf("----------------------------------------------------------------------------------------------\n");
     printf("Average CPU burst time = %.2f ms, Average waiting time = %.2f ms\n", avgBurstTime, avgWaitingTime);
     printf("Average turn around time = %.2f ms, Average response time = %.2f ms\n", avgTurnaroundTime, avgResponseTime);
-    printf("Total No. of Context Switching Performed = %d\n", ttlContextSwitches);
+    printf("Total No. of Context Switching Performed = %d\n\n", ttlContextSwitches);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -448,13 +404,16 @@ void roundRobin(struct Process process[], int maxConnections, char *scheduler, i
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
+    if (argc > 3) {
+        perror("usage");
+        exit(1);
+    }
+
     Queue* queue = createQueue();
 
     struct Process process[10];
     int maxConnections = 10;
-    int quantumTime = atoi(argv[2]);
-    char scheduler[10];
-    strcpy(scheduler, argv[1]);
+    int quantumTime;
     
     // obtaining all CPU information
     readFile(process, maxConnections);
@@ -462,20 +421,22 @@ int main(int argc, char *argv[]) {
 
     // executing FCFS scheduler
     if (!strcmp(argv[1], "0")) {
-        firstComeFirstServe(process, maxConnections, scheduler);
+        firstComeFirstServe(process, maxConnections, argv[1]);
     }
 
     // executing SRTF scheduler
-    // if (!strcmp(argv[1], "1")) {
-    //     // shortestRunTimeFirst(process, maxConnections);
-    // }
+    if (!strcmp(argv[1], "1")) {
+        shortestRemainingTimeFirst(process, maxConnections, argv[1]);
+    }
 
-    // executing RR scheduler
-    // int quantumTime = argv[2];
-    
+    // executing RR scheduler  
+    if (argc > 2) {
+        quantumTime = atoi(argv[2]);
+    }
+
     if (!strcmp(argv[1], "2")) {
         // roundRobin(process, maxConnections, quantumTime);
-        roundRobin(process, maxConnections, scheduler, quantumTime);
+        roundRobin(process, maxConnections, argv[1], quantumTime);
     }
 
     return 0;

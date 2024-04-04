@@ -1,0 +1,1 @@
+current.waitingTime = currentTime - current.arrivalTime - current.burstTime;
