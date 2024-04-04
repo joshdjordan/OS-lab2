@@ -129,17 +129,17 @@ void display(Queue *queue, char *scheduler) {
     
     if (!strcmp(scheduler, "0")) {
         printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: FCFS ********************\n");
+        printf("************ Scheduling algorithm: FCFS *******************************\n");
         printf("*********************************************************************\n");
-        printf("pid\tarrival\tCPU-burst\tfinish\twaiting\tturnaround\tresponse\tNo. of\n");
-        printf("\ttime\ttime\t\ttime\ttime\ttime\t\ttime\tContext\n");
+        printf("Pid\tArrival\tCPU-Burst\tFinish\tWaiting\tTurnaround\tresponse\tNo. of\n");
+        printf("\tTime\tTime\t\ttime\ttime\ttime\t\ttime\tContext\n");
         printf("\t\t\t\t\t\t\t\t\tSwitch\n");
         printf("---------------------------------------------------------------------\n");
     }
 
     else if (!strcmp(scheduler, "1")) {
         printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: SRTF ********************\n");
+        printf("************ Scheduling algorithm: SRTF *******************************\n");
         printf("*********************************************************************\n");
         printf("pid\tarrival\tCPU-burst\tfinish\twaiting\tturnaround\tresponse\tNo. of\n");
         printf("\ttime\ttime\t\ttime\ttime\ttime\t\ttime\tContext\n");
@@ -147,7 +147,7 @@ void display(Queue *queue, char *scheduler) {
         printf("---------------------------------------------------------------------\n");
     } else {
         printf("*********************************************************************\n");
-        printf("************ Scheduling algorithm: RR ********************\n");
+        printf("************ Scheduling algorithm: RR *******************************\n");
         printf("*********************************************************************\n");
         printf("pid\tarrival\tCPU-burst\tfinish\twaiting\tturnaround\tresponse\tNo. of\n");
         printf("\ttime\ttime\t\ttime\ttime\ttime\t\ttime\tContext\n");
@@ -188,7 +188,7 @@ void readFile(struct Process process[], int maxConnections) {
 //                                          FIRST-COME-FIRST-SERVE IMPLEMENTATION                                             //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void firstComeFirstServe(struct Process process[], int maxConnections, char scheduler) {
+void firstComeFirstServe(struct Process process[], int maxConnections, char *scheduler) {
     Queue *queue = createQueue();
     Queue *completedQ = createQueue();
 
@@ -272,7 +272,7 @@ void firstComeFirstServe(struct Process process[], int maxConnections, char sche
 //                                   SHORTEST REMAINING TIME FIRST (SRTF) IMPLEMENTATION                                      //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void shortestRemainingTimeFirst(struct Process process[], int maxConnections, char scheduler) {
+void shortestRemainingTimeFirst(struct Process process[], int maxConnections, char *scheduler) {
     Queue* queue = createQueue();
     Queue* completedQ = createQueue();
 
@@ -358,7 +358,7 @@ void shortestRemainingTimeFirst(struct Process process[], int maxConnections, ch
 //                                            ROUND-ROBIN (RR) IMPLEMENTATION                                                 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void roundRobin(struct Process process[], int maxConnections, char scheduler, int quantumTime) {
+void roundRobin(struct Process process[], int maxConnections, char *scheduler, int quantumTime) {
     Queue *queue = createQueue();
     Queue *completedQ = createQueue();
 
@@ -462,7 +462,7 @@ int main(int argc, char *argv[]) {
 
     // executing FCFS scheduler
     if (!strcmp(argv[1], "0")) {
-        firstComeFirstServe(process, maxConnections, argv);
+        firstComeFirstServe(process, maxConnections, scheduler);
     }
 
     // executing SRTF scheduler
